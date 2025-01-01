@@ -4,13 +4,19 @@ import js from '@eslint/js';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  // js.configs.recommended,
+  Object.assign({},
+    js.configs.recommended,
+    {
+      ignores: ['*.config.*', 'dist/*', 'node_modules/*']
+    }
+  ),
+
   {
-    files: ['src/**/*.js', 'src/**/*.mjs'],
-    languageOptions: {
-      globals: globals.browser,
-      sourceType: 'commonjs',
-      sourceType: 'module'
+    rules: {
+      "no-unused-vars": 'warn',
+      "no-undef": 'warn'
     },
-    rules: js.configs.recommended.rules,
-  }
+    ignores: ['*.config.*', 'dist/*', 'node_modules/*']
+  },
 ]

@@ -5,27 +5,42 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 
 module.exports = {
-  mode: 'production',
-
-  entry: './src/index.mjs',
-
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
   },
-
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.html$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
+          {
+            loader: 'html-loader',
+          },
         ],
       },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      }
     ]
   },
-
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'main.html',
@@ -36,7 +51,6 @@ module.exports = {
       configType: 'flat',
     }),
   ],
-
   devServer: {
     static: {
       directory: path.join(__dirname, 'dist'),
